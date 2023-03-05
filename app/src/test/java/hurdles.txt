@@ -1,0 +1,21 @@
+ - - What are the main problems in implementing this app? - -
+
+ - Worldly algorithm
+    - Arguments: word1, word2, x
+    - Function: Recursively search for a set of words which
+    -           are each one letter apart from one another
+    -           and result in the formation of word2 in x
+    -           tries (which would be 4).
+    -           The search begins from word1.
+        - First, check if word1 and word2 have the same length.
+            : If length is not the same, throw a Toast and return!
+            : If length is the same, denote it as a global variable.
+        - Next, search through the words file for all words that are
+          both the same length as the words and share the same first
+          letter with the first or last word. (There's only 3 chances
+          to swap letters, so a surrogate first-letter is impossible)
+            - Store the words that match those qualities in a list
+        - Next, start a recursive algorithm that passes the list,
+          curr_word, word2, the current try number, and an output list.
+            - If curr_word = word2 && try_number = x, return the complete
+              list.
