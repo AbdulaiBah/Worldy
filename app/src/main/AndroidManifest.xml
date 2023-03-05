@@ -12,6 +12,15 @@
         android:theme="@style/Theme.Worldy"
         tools:targetApi="31">
         <activity
+            android:name=".GameScreen"
+            android:exported="false" />
+        <activity
+            android:name=".ConfigurationScreen"
+            android:exported="false" />
+        <activity
+            android:name=".splashScreen"
+            android:exported="false" />
+        <activity
             android:name=".Main"
             android:exported="false" />
     </application>
