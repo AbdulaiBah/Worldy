@@ -4,8 +4,7 @@
     - Arguments: word1, word2, x
     - Function: Recursively search for a set of words which
     -           are each one letter apart from one another
-    -           and result in the formation of word2 in x
-    -           tries (which would be 4).
+    -           and result in the formation of word2 in a maximum of x tries.
     -           The search begins from word1.
         - First, check if word1 and word2 have the same length.
             : If length is not the same, throw a Toast and return!
@@ -19,6 +18,7 @@
           curr_word, word2, the current try number, and an output list.
             - If curr_word = word2 && try_number = x, return the complete
               list.
+            - The recursive algorithm stops if either curr_word == word2 or try_number == max_tries
 
  - App structure
     - When the app is launched for the first time, display a tutorial png in "fullscreen"
@@ -28,5 +28,10 @@
 
  - Getting pictures from text
     - Every few seconds, query the API for the current guessable word.
-    - Include try-catch blocks for IOException, MalformedURLException
+    - I made an account with pixabay, so we can use that
+    - Example URL: https://pixabay.com/api/?key=34155944-44bc9eeb96f0cc3d13b404eaa&q=yellow+flowers&image_type=photo
+    - That URL returns a JSON file, and the JSON file has the image link that we're looking for
+    - q="" should have the keyword we're looking for, and image_type="" can be either of the following:
+        : "image", "vector", "illustration", or "all"
+    - Include try-catch blocks for IOException, MalformedURLException, JSONException
     - Pass the resulting data as bytes to a BitmapFactory, and display the result on an animated ImageView
