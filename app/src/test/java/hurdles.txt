@@ -19,3 +19,14 @@
           curr_word, word2, the current try number, and an output list.
             - If curr_word = word2 && try_number = x, return the complete
               list.
+
+ - App structure
+    - When the app is launched for the first time, display a tutorial png in "fullscreen"
+    - Four EditTexts in a line (LinearLayout)
+    - When the puzzle is finished, display a simple animation of a star or something
+    - Display images related to the guessable word using that "Image by Word" API
+
+ - Getting pictures from text
+    - Every few seconds, query the API for the current guessable word.
+    - Include try-catch blocks for IOException, MalformedURLException
+    - Pass the resulting data as bytes to a BitmapFactory, and display the result on an animated ImageView
