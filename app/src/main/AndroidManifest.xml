@@ -12,6 +12,9 @@
         android:theme="@style/Theme.Worldy"
         tools:targetApi="31">
         <activity
+            android:name=".ReadMe"
+            android:exported="false" />
+        <activity
             android:name=".GameScreen"
             android:exported="false" />
         <activity

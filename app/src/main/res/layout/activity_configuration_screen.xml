@@ -4,13 +4,177 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black_raisin"
     tools:context=".ConfigurationScreen">
 
-    <GridView
+    <TextView
+        android:id="@+id/GameRules"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/puzzleLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:textColor="@color/white_isabelline"
+        android:fontFamily="sans-serif-black"
+        android:textSize="18dp"
+        android:text="Please enter the starting and ending words for the puzzle, otherwise Please select a difficulty from the slider and generate a new random puzzle"
+        android:textAlignment="center"
+        android:background="@color/black_raisin"
+        />
+
+    <GridLayout
+        android:id="@+id/puzzleLayout"
         android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <EditText
+            android:id="@+id/startWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:hint="Starting Word"
+            android:autofillHints="text"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textColor="@color/white_isabelline"
+            android:textColorHint="@color/white_isabelline"
+            android:backgroundTint="@color/white_isabelline"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/endWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:fontFamily="sans-serif-black"
+            android:hint="Ending Word"
+            android:autofillHints="text"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textColor="@color/white_isabelline"
+            android:textColorHint="@color/white_isabelline"
+            android:backgroundTint="@color/white_isabelline"
+            android:textSize="20dp" />
+
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/puzzleLayout"
+        app:layout_constraintBottom_toTopOf="@id/optionsLayout">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:layout_above="@+id/DifficultyTable"
+            android:layout_alignStart="@+id/sb_task_detail_status">
+
+            <TableRow
+                android:id="@+id/statusRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/easyMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EASY"
+                    android:fontFamily="sans-serif-black"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/white_isabelline"
+                    android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/mediumMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MEDIUM"
+                    android:fontFamily="sans-serif-black"
+                    android:textAlignment="center"
+                    android:textColor="@color/white_isabelline"
+                    android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/hardMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="HARD"
+                    android:fontFamily="sans-serif-black"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/white_isabelline"
+                    android:textSize="15dp" />
+
+            </TableRow>
+
+        </TableLayout>
+
+        <SeekBar
+            android:id="@+id/DifficutlySelector"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:max="2"
+            android:progress="0"
+            android:thumbTint="@color/green_logo"
+            android:progressBackgroundTint="@color/white_isabelline"
+            android:progressTint="@color/white_isabelline"
+            app:layout_constraintBottom_toTopOf="@+id/optionsLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/puzzleLayout">
+        </SeekBar>
+
+    </LinearLayout>
+
+    <GridLayout
+        android:id="@+id/optionsLayout"
+        android:layout_width="219dp"
+        android:layout_height="118dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/puzzleLayout">
+
+        <Button
+            android:layout_gravity="center"
+            android:id="@+id/playButton"
+            android:backgroundTint="@color/green_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:text="PLAY"
+            android:textColor="@color/white_isabelline"
+            android:textSize="20dp" />
+
+        <Button
+            android:layout_gravity="center"
+            android:id="@+id/randPuzzle"
+            android:backgroundTint="@color/green_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:text="Random Puzzle"
+            android:textColor="@color/white_isabelline"
+            android:textSize="20dp" />
+
+
+    </GridLayout>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
