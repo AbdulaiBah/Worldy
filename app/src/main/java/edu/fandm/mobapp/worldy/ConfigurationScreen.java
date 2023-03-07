@@ -38,7 +38,7 @@ public class ConfigurationScreen extends AppCompatActivity {
     public String TAG = "Configuration Screen";
     public String word_source = "bear";
     public ArrayList<String> word_dict;
-    public static String fileName = "app/java/edu.fandm.mobapp.worldly/words_simple.txt";
+    public static String fileName = "app/src/test/java/words_simple.txt";
 
     public interface GetJSONCallback {
         void onComplete(String json);
@@ -264,7 +264,12 @@ public class ConfigurationScreen extends AppCompatActivity {
                 if (from.length() > 0 && to.length() > 0) {
                     ArrayList<String> word_list = scanFile(fileName, from, to);
                     ArrayList<String> matches = search_for_match(word_list, from, to, from.length());
-                    Toast.makeText(getApplicationContext(), matches.size(), Toast.LENGTH_SHORT).show();
+                    if (matches != null) {
+                        Toast.makeText(getApplicationContext(), matches.size(), Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Could not find matches!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
