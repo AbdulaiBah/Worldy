@@ -34,6 +34,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class ConfigurationScreen extends AppCompatActivity {
 
+    public int mode;
     public String TAG = "Configuration Screen";
     public String word_source = "bear";
     public ArrayList<String> word_dict;
@@ -241,7 +242,7 @@ public class ConfigurationScreen extends AppCompatActivity {
         diff_slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-
+                mode = i;
             }
 
             @Override
