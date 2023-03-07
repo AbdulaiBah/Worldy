@@ -37,15 +37,15 @@ public class Main extends AppCompatActivity {
     public ArrayList<String> word_dict;
     public static String fileName = "app/java/words_simple.txt";
 
-    interface GetJSONCallback {
+    public interface GetJSONCallback {
         void onComplete(String json);
     }
 
-    interface GetImageCallback {
+    public interface GetImageCallback {
         void onComplete(Bitmap bp);
     }
 
-    GetJSONCallback gjsonc = new GetJSONCallback() {
+    public GetJSONCallback gjsonc = new GetJSONCallback() {
         @Override
         public void onComplete(String output) {
             runOnUiThread(new Runnable() {
@@ -63,7 +63,7 @@ public class Main extends AppCompatActivity {
         }
     };
 
-    GetImageCallback gimgc = new GetImageCallback() {
+    public GetImageCallback gimgc = new GetImageCallback() {
         @Override
         public void onComplete(Bitmap output) {
             runOnUiThread(new Runnable() {
@@ -234,6 +234,7 @@ public class Main extends AppCompatActivity {
         String here = "break"; String there = "cream";
         ArrayList<String> word_list = scanFile(here,there,fileName);
         ArrayList<String> matches = search_for_match(word_list, here.toLowerCase(), there.toLowerCase(), here.length());
+        Toast.makeText(getApplicationContext(), matches.size(), Toast.LENGTH_SHORT).show();
 
     }
 }
