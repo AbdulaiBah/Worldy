@@ -234,6 +234,7 @@ public class Main extends AppCompatActivity {
         String here = "break"; String there = "cream";
         ArrayList<String> word_list = scanFile(here,there,fileName);
         ArrayList<String> matches = search_for_match(word_list, here.toLowerCase(), there.toLowerCase(), here.length());
+        Toast.makeText(getApplicationContext(), matches.size(), Toast.LENGTH_SHORT).show();
 
     }
 }
