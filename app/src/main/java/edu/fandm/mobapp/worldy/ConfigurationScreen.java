@@ -1,24 +1,32 @@
 package edu.fandm.mobapp.worldy;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +34,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,7 +47,7 @@ public class ConfigurationScreen extends AppCompatActivity {
     public String TAG = "Configuration Screen";
     public String word_source = "bear";
     public ArrayList<String> word_dict;
-    public static String fileName = "app/src/test/java/words_simple.txt";
+    public static String fileName;
 
     public interface GetJSONCallback {
         void onComplete(String json);
@@ -73,7 +82,8 @@ public class ConfigurationScreen extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (output != null) {
-                        // From here, set image to be equal to whatever gets fetched
+                        ImageView iv = findViewById(R.id.test_image);
+                        iv.setImageBitmap(output);
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Could not get JSON file!", Toast.LENGTH_SHORT).show();
@@ -99,17 +109,24 @@ public class ConfigurationScreen extends AppCompatActivity {
             while ((curr = in.readLine()) != null) {
                 data.append(curr);
             }
+            Log.d("ConfigurationScreen",data.toString());
             JSONObject jsonCatFact = new JSONObject(data.toString());
-            ret_url = (String)jsonCatFact.get("imageURL");
+            JSONArray jsonArray = jsonCatFact.getJSONArray("hits");
+            JSONObject help = (JSONObject)jsonArray.get(0);
+            ret_url = (String)help.get("largeImageURL");
 
         }
         catch (MalformedURLException mue) {
+            Looper.prepare();
             Toast.makeText(getApplicationContext(), "Invalid URL!", Toast.LENGTH_SHORT).show();
         }
         catch (JSONException jsone) {
+            Looper.prepare();
             Toast.makeText(getApplicationContext(), "JSON file formatted improperly!", Toast.LENGTH_SHORT).show();
+            jsone.printStackTrace();
         }
         catch (IOException ioe) {
+            Looper.prepare();
             Toast.makeText(getApplicationContext(), "URL cannot be connected!", Toast.LENGTH_SHORT).show();
         }
         return ret_url;
@@ -176,24 +193,32 @@ public class ConfigurationScreen extends AppCompatActivity {
         }
     }
 
+    // From: https://stackoverflow.com/questions/30417810/reading-from-a-text-file-in-android-studio-java?noredirect=1&lq=1
+    private ArrayList<String> readFile()
+    {
+        ArrayList<String> myData = new ArrayList<String>();
+        File root = getFilesDir();
+        File targetFile = new File(root,"words_simple.txt");
+        try {
+            Scanner scan = new Scanner(targetFile);
+            String s;
+            while ((s = scan.nextLine()) != null) {
+                myData.add(s);
+            }
+            scan.close();
+            }
+        catch (FileNotFoundException fnfe) {
+            fnfe.printStackTrace();
+        }
+        return myData;
+    }
     public ArrayList<String> scanFile(String file, String word1, String word2) {
-        ArrayList<String> temp = new ArrayList<>();
+        ArrayList<String> temp = readFile();
+        Toast.makeText(getApplicationContext(),String.valueOf(temp.size()),Toast.LENGTH_SHORT).show();
+
         if (word1.length() != word2.length()) {
             return null;
         }
-        try {
-            Scanner scan = new Scanner(new File(file));
-            while (scan.hasNextLine()) {
-                String data = scan.nextLine();
-                if (data.length() == word1.length() && (data.charAt(0) == word1.charAt(0) || data.charAt(0) == word2.charAt(0)) && !data.equals(word1)) {
-                    temp.add(data.toLowerCase());
-                }
-            }
-        }
-        catch (FileNotFoundException fnfe) {
-            Toast.makeText(getApplicationContext(), "File not found!", Toast.LENGTH_SHORT).show();
-        }
-
         return temp;
     }
     public ArrayList<String> search_for_match(ArrayList<String> list, String word1, String word2, int x) {
@@ -215,15 +240,17 @@ public class ConfigurationScreen extends AppCompatActivity {
             return output_list;
         }
         for (String entry : list) {
-            int correct = 0;
-            for (int i = 0; i < curr.length(); i++) {
-                correct += (entry.charAt(i) == curr.charAt(i) ? 1 : 0);
-            }
-            if (correct == curr.length() - 1) {
-                ArrayList<String> temp = (ArrayList<String>)list.clone();
-                temp.remove(curr);
-                output_list.add(entry);
-                return find_matches(temp,entry,dest,output_list,try_num+1,try_max);
+            if (entry.length() != 0) {
+                int correct = 0;
+                for (int i = 0; i < curr.length() - 1; i++) {
+                    correct += (entry.charAt(i) == curr.charAt(i) ? 1 : 0);
+                }
+                if (correct == curr.length() - 1) {
+                    ArrayList<String> temp = (ArrayList<String>) list.clone();
+                    temp.remove(curr);
+                    output_list.add(entry);
+                    return find_matches(temp, entry, dest, output_list, try_num + 1, try_max);
+                }
             }
         }
         return null;
@@ -238,6 +265,19 @@ public class ConfigurationScreen extends AppCompatActivity {
         SeekBar diff_slider = findViewById(R.id.DifficutlySelector);
         Button random_puzzle = findViewById(R.id.randPuzzle);
         Button play_button = findViewById(R.id.playButton);
+        ImageView testImage = findViewById(R.id.test_image);
+
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.INTERNET},0);
+
+        testImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                GetJSONExecutor jse = new GetJSONExecutor();
+                jse.fetch(gjsonc);
+
+            }
+        });
 
         diff_slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
