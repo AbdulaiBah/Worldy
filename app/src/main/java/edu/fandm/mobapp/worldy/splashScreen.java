@@ -8,6 +8,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,8 @@ import android.view.WindowInsets;
  * status bar and navigation/system bar) with user interaction.
  */
 public class splashScreen extends AppCompatActivity {
+
+    SharedPreferences prefs = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,5 +51,24 @@ public class splashScreen extends AppCompatActivity {
             }
         }, 1375);
 
+        prefs = getSharedPreferences("com.mycompany.myAppName", MODE_PRIVATE);
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        if (prefs.getBoolean("firstrun", true)) {
+            Intent i = new Intent(getApplicationContext(), ReadMe.class);
+            startActivity(i);
+            prefs.edit().putBoolean("firstrun", false).apply();
+        }
+    }
+
+    @Override
+    public void onUserInteraction() {
+        Intent i = new Intent(getApplicationContext(), ConfigurationScreen.class);
+        startActivity(i);
+    }
+
 }
