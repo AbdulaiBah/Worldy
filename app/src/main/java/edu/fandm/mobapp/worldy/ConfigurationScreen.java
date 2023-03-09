@@ -1,19 +1,23 @@
 package edu.fandm.mobapp.worldy;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -78,7 +82,8 @@ public class ConfigurationScreen extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (output != null) {
-                        // From here, set image to be equal to whatever gets fetched
+                        ImageView iv = findViewById(R.id.test_image);
+                        iv.setImageBitmap(output);
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Could not get JSON file!", Toast.LENGTH_SHORT).show();
@@ -104,17 +109,24 @@ public class ConfigurationScreen extends AppCompatActivity {
             while ((curr = in.readLine()) != null) {
                 data.append(curr);
             }
+            Log.d("ConfigurationScreen",data.toString());
             JSONObject jsonCatFact = new JSONObject(data.toString());
-            ret_url = (String)jsonCatFact.get("imageURL");
+            JSONArray jsonArray = jsonCatFact.getJSONArray("hits");
+            JSONObject help = (JSONObject)jsonArray.get(0);
+            ret_url = (String)help.get("largeImageURL");
 
         }
         catch (MalformedURLException mue) {
+            Looper.prepare();
             Toast.makeText(getApplicationContext(), "Invalid URL!", Toast.LENGTH_SHORT).show();
         }
         catch (JSONException jsone) {
+            Looper.prepare();
             Toast.makeText(getApplicationContext(), "JSON file formatted improperly!", Toast.LENGTH_SHORT).show();
+            jsone.printStackTrace();
         }
         catch (IOException ioe) {
+            Looper.prepare();
             Toast.makeText(getApplicationContext(), "URL cannot be connected!", Toast.LENGTH_SHORT).show();
         }
         return ret_url;
@@ -196,7 +208,7 @@ public class ConfigurationScreen extends AppCompatActivity {
             scan.close();
             }
         catch (FileNotFoundException fnfe) {
-        fnfe.printStackTrace();
+            fnfe.printStackTrace();
         }
         return myData;
     }
@@ -253,6 +265,19 @@ public class ConfigurationScreen extends AppCompatActivity {
         SeekBar diff_slider = findViewById(R.id.DifficutlySelector);
         Button random_puzzle = findViewById(R.id.randPuzzle);
         Button play_button = findViewById(R.id.playButton);
+        ImageView testImage = findViewById(R.id.test_image);
+
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.INTERNET},0);
+
+        testImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                GetJSONExecutor jse = new GetJSONExecutor();
+                jse.fetch(gjsonc);
+
+            }
+        });
 
         diff_slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
