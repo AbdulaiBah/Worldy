@@ -2,6 +2,8 @@ package edu.fandm.mobapp.worldy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -18,7 +20,9 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +30,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,7 +43,7 @@ public class ConfigurationScreen extends AppCompatActivity {
     public String TAG = "Configuration Screen";
     public String word_source = "bear";
     public ArrayList<String> word_dict;
-    public static String fileName = "app/src/test/java/words_simple.txt";
+    public static String fileName;
 
     public interface GetJSONCallback {
         void onComplete(String json);
@@ -176,24 +181,32 @@ public class ConfigurationScreen extends AppCompatActivity {
         }
     }
 
+    // From: https://stackoverflow.com/questions/30417810/reading-from-a-text-file-in-android-studio-java?noredirect=1&lq=1
+    private ArrayList<String> readFile()
+    {
+        ArrayList<String> myData = new ArrayList<String>();
+        File root = getFilesDir();
+        File targetFile = new File(root,"words_simple.txt");
+        try {
+            Scanner scan = new Scanner(targetFile);
+            String s;
+            while ((s = scan.nextLine()) != null) {
+                myData.add(s);
+            }
+            scan.close();
+            }
+        catch (FileNotFoundException fnfe) {
+        fnfe.printStackTrace();
+        }
+        return myData;
+    }
     public ArrayList<String> scanFile(String file, String word1, String word2) {
-        ArrayList<String> temp = new ArrayList<>();
+        ArrayList<String> temp = readFile();
+        Toast.makeText(getApplicationContext(),String.valueOf(temp.size()),Toast.LENGTH_SHORT).show();
+
         if (word1.length() != word2.length()) {
             return null;
         }
-        try {
-            Scanner scan = new Scanner(new File(file));
-            while (scan.hasNextLine()) {
-                String data = scan.nextLine();
-                if (data.length() == word1.length() && (data.charAt(0) == word1.charAt(0) || data.charAt(0) == word2.charAt(0)) && !data.equals(word1)) {
-                    temp.add(data.toLowerCase());
-                }
-            }
-        }
-        catch (FileNotFoundException fnfe) {
-            Toast.makeText(getApplicationContext(), "File not found!", Toast.LENGTH_SHORT).show();
-        }
-
         return temp;
     }
     public ArrayList<String> search_for_match(ArrayList<String> list, String word1, String word2, int x) {
@@ -215,15 +228,17 @@ public class ConfigurationScreen extends AppCompatActivity {
             return output_list;
         }
         for (String entry : list) {
-            int correct = 0;
-            for (int i = 0; i < curr.length(); i++) {
-                correct += (entry.charAt(i) == curr.charAt(i) ? 1 : 0);
-            }
-            if (correct == curr.length() - 1) {
-                ArrayList<String> temp = (ArrayList<String>)list.clone();
-                temp.remove(curr);
-                output_list.add(entry);
-                return find_matches(temp,entry,dest,output_list,try_num+1,try_max);
+            if (entry.length() != 0) {
+                int correct = 0;
+                for (int i = 0; i < curr.length() - 1; i++) {
+                    correct += (entry.charAt(i) == curr.charAt(i) ? 1 : 0);
+                }
+                if (correct == curr.length() - 1) {
+                    ArrayList<String> temp = (ArrayList<String>) list.clone();
+                    temp.remove(curr);
+                    output_list.add(entry);
+                    return find_matches(temp, entry, dest, output_list, try_num + 1, try_max);
+                }
             }
         }
         return null;
