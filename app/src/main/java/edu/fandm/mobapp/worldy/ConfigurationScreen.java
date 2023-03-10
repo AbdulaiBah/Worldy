@@ -58,15 +58,6 @@ public class ConfigurationScreen extends AppCompatActivity {
         void onComplete(Bitmap bp);
     }
 
-    public ArrayList<String> populate() {
-        String[] dummy = {"wane", "vane", "cots", "cats", "wots", "wine", "vine", "wins", "wets", "gets", "wits", "bits", "bets", "pets", "wing", "bins", "gins", "beer", "bees", "beet", "beep", "weep", "deep"};
-        ArrayList<String> output = new ArrayList<String>();
-        for (String d : dummy) {
-            output.add(d);
-        }
-        return output;
-    };
-
     public ConfigurationScreen.GetJSONCallback gjsonc = new ConfigurationScreen.GetJSONCallback() {
         @Override
         public void onComplete(String output) {
@@ -92,8 +83,8 @@ public class ConfigurationScreen extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (output != null) {
-                        ImageView iv = findViewById(R.id.test_image);
-                        iv.setImageBitmap(output);
+                        //ImageView iv = findViewById(R.id.test_image);
+                        //iv.setImageBitmap(output);
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Could not get JSON file!", Toast.LENGTH_SHORT).show();
@@ -203,6 +194,15 @@ public class ConfigurationScreen extends AppCompatActivity {
         }
     }
 
+    public ArrayList<String> populate() {
+        String[] dummy = {"wane", "vane", "cots", "cats", "wots", "wine", "vine", "wins", "wets", "gets", "wits", "bits", "bets", "pets", "wing", "bins", "gins", "beer", "bees", "beet", "beep", "weep", "deep"};
+        ArrayList<String> output = new ArrayList<String>();
+        for (String d : dummy) {
+            output.add(d);
+        }
+        return output;
+    };
+
     // From: https://stackoverflow.com/questions/30417810/reading-from-a-text-file-in-android-studio-java?noredirect=1&lq=1
     private ArrayList<String> readFile()
     {
@@ -276,10 +276,11 @@ public class ConfigurationScreen extends AppCompatActivity {
         SeekBar diff_slider = findViewById(R.id.DifficutlySelector);
         Button random_puzzle = findViewById(R.id.randPuzzle);
         Button play_button = findViewById(R.id.playButton);
-        ImageView testImage = findViewById(R.id.test_image);
+        //ImageView testImage = findViewById(R.id.test_image);
 
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.INTERNET},0);
 
+        /*
         testImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -289,6 +290,7 @@ public class ConfigurationScreen extends AppCompatActivity {
 
             }
         });
+        */
 
         diff_slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
