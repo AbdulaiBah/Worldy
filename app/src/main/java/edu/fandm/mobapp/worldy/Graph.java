@@ -1,23 +1,30 @@
 package edu.fandm.mobapp.worldy;
 
-import static androidx.core.content.FileProvider.buildPath;
-
-import androidx.collection.ArraySet;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Queue;
+import java.util.Set;
 
 public class Graph {
     private Map<String, Set<String>> adjacencyMap;
-    private List<String> words = new ArrayList<>();
+    private Map<Integer,String> wordDict = new HashMap<>();
 
     public Graph() {
         adjacencyMap = new HashMap<>();
         populateWords();
-        for (String word : words) {
+        for (String word : wordDict.values()) {
             adjacencyMap.put(word, new HashSet<>());
         }
         buildGraph();
@@ -25,11 +32,15 @@ public class Graph {
 
     private void populateWords(){
         try {
-            InputStream is = Objects.requireNonNull(getClass().getClassLoader()).getResourceAsStream("assets/words.txt");
+            InputStream is = Objects.requireNonNull(getClass().getClassLoader()).getResourceAsStream("assets/words_simple.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String line = reader.readLine();
+            int i = 0;
             while (line != null) {
-                words.add(line);
+                if (line.length() == 4) {
+                    wordDict.put(i, line);
+                    i++;
+                }
                 line = reader.readLine();
             }
             is.close();
@@ -40,11 +51,9 @@ public class Graph {
     }
 
     private void buildGraph() {
-        for (int i = 0; i < words.size(); i++) {
-            String word1 = words.get(i);
-            for (int j = i + 1; j < words.size(); j++) {
-                String word2 = words.get(j);
-                if (differByOneLetter(word1, word2)) {
+        for (String word1 : wordDict.values()) {
+            for (String word2 : wordDict.values()) {
+                if (!word1.equals(word2) && differByOneLetter(word1, word2)) {
                     Objects.requireNonNull(adjacencyMap.get(word1)).add(word2);
                     Objects.requireNonNull(adjacencyMap.get(word2)).add(word1);
                 }
@@ -72,8 +81,12 @@ public class Graph {
         return adjacencyMap.get(word);
     }
 
+    public Map<Integer,String> getWordDict(){
+        return wordDict;
+    }
+
     public List<String> getPath(String start, String end){
-        if (!words.contains(start) || !words.contains(end)) {
+        if (!wordDict.containsValue(start) || !wordDict.containsValue(end)) {
             return null;
         }
         if (start.equals(end)) {
