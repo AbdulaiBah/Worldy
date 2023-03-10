@@ -1,6 +1,7 @@
 package edu.fandm.mobapp.worldy;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -190,6 +191,7 @@ public class GameScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_screen);
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.INTERNET},0);
 
 
         currentGuess = new String[path.size()];
