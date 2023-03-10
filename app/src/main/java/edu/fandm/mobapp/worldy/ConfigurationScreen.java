@@ -195,42 +195,11 @@ public class ConfigurationScreen extends AppCompatActivity {
     }
 
     public ArrayList<String> populate() {
-        String[] dummy = {"wane", "vane", "cots", "cats", "wots", "wine", "vine", "wins", "wets", "gets", "wits", "bits", "bets", "pets", "wing", "bins", "gins", "beer", "bees", "beet", "beep", "weep", "deep"};
-        ArrayList<String> output = new ArrayList<String>();
-        for (String d : dummy) {
-            output.add(d);
-        }
-        return output;
-    };
-
-    // From: https://stackoverflow.com/questions/30417810/reading-from-a-text-file-in-android-studio-java?noredirect=1&lq=1
-    private ArrayList<String> readFile()
-    {
-        ArrayList<String> myData = new ArrayList<String>();
-        File root = getFilesDir();
-        File targetFile = new File(root,"words_simple.txt");
-        try {
-            Scanner scan = new Scanner(targetFile);
-            String s;
-            while ((s = scan.nextLine()) != null) {
-                myData.add(s);
-            }
-            scan.close();
-            }
-        catch (FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
-        }
-        return myData;
+        // Use this to generate the ArrayList for search_for_match
+        String[] dummy = {"that", "this", "with", "from", "your", "have", "more", "will", "home", "page", "free", "time", "they", "site", "what", "news", "only", "when", "here", "also", "help", "view", "been", "were", "some", "like", "than", "find", "date", "back", "list", "name", "just", "over", "year", "into", "next", "used", "work", "last", "most", "data", "make", "them", "post", "city", "such", "best", "then", "good", "well", "info", "high", "each", "very", "book", "read", "need", "many", "user", "said", "does", "mail", "full", "life", "know", "days", "part", "real", "item", "ebay", "must", "made", "line", "send", "type", "take", "area", "want", "long", "code", "show", "even", "much", "sign", "file", "link", "open", "case", "same", "both", "game", "care", "down", "size", "shop", "text", "rate", "form", "love", "john", "main", "call", "save", "york", "card", "jobs", "food", "sale", "teen", "room", "join", "west", "look", "left", "team", "week", "note", "live", "june", "plan", "cost", "july", "test", "come", "cart", "play", "less", "blog", "park", "side", "give", "sell", "body", "east", "club", "road", "gift", "hard", "four", "blue", "easy", "star", "hand", "keep", "baby", "term", "film", "head", "cell", "self", "away", "once", "sure", "cars", "tell", "able", "gold", "arts", "past", "five", "upon", "says", "land", "done", "ever", "word", "bill", "talk", "kids", "true", "else", "mark", "rock", "tips", "plus", "auto", "edit", "fast", "fact", "unit", "tech", "meet", "feel", "bank", "risk", "town", "girl", "toys", "golf", "loan", "wide", "sort", "half", "step", "none", "paul", "lake", "sony", "fire", "chat", "html", "loss", "face", "base", "near", "stay", "turn", "mean", "king", "copy", "drug", "pics", "cash", "seen", "port", "stop", "soon", "held", "mind", "lost", "tour", "menu", "hope", "wish", "role", "came", "fine", "hour", "bush", "huge", "kind", "move", "logo", "nice", "sent", "band", "lead", "went", "mode", "fund", "male", "took", "song", "cnet", "late", "fall", "idea", "tool", "hill", "maps", "deal", "hold", "safe", "feed", "hall", "anti", "ship", "paid", "hair", "tree", "thus", "wall", "wine", "vote", "ways", "rule", "told", "feet", "door", "cool", "asia", "uses", "java", "pass", "fees", "skin", "prev", "mary", "ring", "iraq", "boys", "deep", "rest", "pool", "mini", "fish", "pack", "born", "race", "debt", "core", "sets", "wood", "rent", "dark", "host", "isbn", "fair", "ohio", "gets", "dead", "mike", "trip", "poor", "eyes", "farm", "lord", "hear", "goes", "wife", "hits", "zone", "jack", "flat", "flow", "path", "laws", "skip", "diet", "army", "gear", "lots", "firm", "jump", "dvds", "ball", "goal", "sold", "wind", "palm", "pain", "xbox", "oral", "ford", "edge", "root", "pink", "shot", "cold", "foot", "mass", "heat", "wild", "miss", "task", "soft", "fuel", "walk", "wait", "rose", "pick", "load", "tags", "guys", "drop", "rich", "ipod", "seem", "hire", "gave", "ones", "rank", "kong", "died", "inch", "snow", "camp", "fill", "gone", "fort", "gene", "disc", "boat", "icon", "ends", "cast", "felt", "soul", "aids", "flag", "atom", "iron", "void", "disk", "desk", "dave", "hong", "vice", "duty", "bear", "gain", "lack", "iowa", "knew", "zoom", "blow", "clip", "wire", "tape", "spam", "acid", "cent", "null", "zero", "roll", "bath", "font", "beta", "fail", "jazz", "bags", "wear", "rare", "bars", "dual", "rise", "bird", "lady", "fans", "dell", "seat", "bids", "toll", "cape", "mine", "whom", "math", "dogs", "moon", "fear", "wars", "kept", "beat", "arms", "utah", "hide", "slow", "faqs", "nine", "eric", "spot", "grow", "rain", "onto", "diff", "bass", "hole", "pets", "ride", "pair", "runs", "yeah", "evil", "euro", "peak", "salt", "bell", "jeff", "lane", "kill", "ages", "plug", "cook", "perl", "bike", "lose", "seek", "tony", "kits", "soil", "matt", "exit", "iran", "keys", "wave", "holy", "acts", "mesh", "dean", "poll", "unix", "bond", "jean", "visa", "pure", "lens", "draw", "warm", "babe", "crew", "legs", "rear", "node", "lock", "mile", "mens", "bowl", "tank", "navy", "dish", "adam", "slot", "gray", "demo", "hate", "rice", "loop", "gary", "vary", "rome", "arab", "milk", "boot", "push", "misc", "dear", "beer", "jose", "jane", "earn", "twin", "dont", "bits", "suit", "chip", "char", "echo", "grid", "voip", "pull", "nasa", "nick", "plot", "pump", "anne", "exam", "ryan", "beds", "bold", "scan", "aged", "bulk", "pmid", "cute", "para", "seed", "peer", "meat", "alex", "bang", "bone", "bugs", "gate", "tone", "busy", "neck", "wing", "tiny", "rail", "tube", "belt", "luck", "dial", "gang", "cake", "semi", "andy", "cafe", "till", "shoe", "sand", "seal", "lies", "pipe", "deck", "thin", "sick", "dose", "lets", "cats", "greg", "folk", "okay", "hist", "lift", "lisa", "mall", "fell", "yard", "pour", "tion", "dust", "wiki", "kent", "adds", "ward", "roof", "kiss", "rush", "mpeg", "yoga", "lamp", "rico", "http", "glad", "wins", "rack", "boss", "solo", "tall", "pdas", "nova", "wake", "drum", "foto", "ease", "tabs", "pine", "tend", "gulf", "rick", "hunt", "thai", "fred", "mill", "burn", "labs", "sole", "laid", "clay", "weak", "blvd", "wise", "odds", "marc", "sons", "leaf", "cuba", "silk", "kate", "wolf", "fits", "kick", "meal", "hurt", "slip", "cuts", "mars", "caps", "pill", "meta", "mint", "spin", "wash", "aims", "ieee", "corp", "soap", "axis", "guns", "hero", "punk", "duke", "pace", "wage", "dawn", "carl", "coat", "rica", "doll", "peru", "nike", "reed", "mice", "temp", "vast", "wrap", "mood", "quiz", "beam", "tops", "shut", "ncaa", "thou", "mask", "coal", "lion", "goto", "neil", "beef", "hats", "surf", "hook", "cord", "crop", "lite", "sing", "tons", "hang", "hood", "fame", "eggs", "ruby", "stem", "drew", "tune", "corn", "puts", "grew", "trek", "ties", "brad", "jury", "tail", "lawn", "soup", "byte", "nose", "oclc", "juan", "thru", "jews", "trim", "espn", "quit", "lung", "todd", "doug", "sees", "bull", "cole", "mart", "tale", "lynn", "docs", "coin", "fake", "cure", "arch", "hdtv", "asin", "bomb", "harm", "deer", "oven", "noon", "cams", "joel", "proc", "mate", "chef", "isle", "slim", "luke", "comp", "pete", "spec", "penn", "midi", "tied", "dale", "oils", "sept", "unto", "pays", "lang", "stud", "fold", "pole", "mega", "bend", "moms", "glen", "lips", "pond", "tire", "chad", "josh", "drag", "ripe", "rely", "scsi", "nuts", "nail", "span", "joke", "univ", "pads", "inns", "cups", "foam", "poem", "asks", "bean", "bias", "swim", "nano", "loud", "rats", "stat", "cruz", "bios", "thee", "ruth", "pray", "pope", "jeep", "bare", "hung", "mono", "tile", "apps", "ciao", "knee", "prep", "chem", "pros", "cant", "sara", "joan", "duck", "dive", "fiji", "audi", "raid", "volt", "dirt", "acer", "dist", "geek", "sink", "grip", "watt", "pins", "reno", "polo", "horn", "prot", "frog", "logs", "snap", "jpeg", "swap", "flip", "buzz", "nuke", "boom", "calm", "fork", "zope", "gmbh", "sims", "tray", "sage", "suse", "cave", "wool", "eyed", "grab", "oops", "trap", "fool", "karl", "dies", "jail", "ipaq", "comm", "lace", "ugly", "hart", "ment", "biol", "rows", "treo", "gods", "poly", "ears", "fist", "mere", "cons", "taxi", "worn", "shaw", "expo", "deny", "bali", "judy", "trio", "cube", "rugs", "fate", "gras", "oval", "soma", "href", "benz", "wifi", "tier", "earl", "guam", "cite", "mess", "rope", "dump", "hose", "pubs", "mild", "clan", "sync", "mesa", "hull", "shed", "memo", "tide", "funk", "reel", "bind", "rand", "buck", "usgs", "acre", "lows", "aqua", "chen", "emma", "pest", "reef", "chan", "beth", "jill", "sofa", "dans", "viii", "tent", "dept", "hack", "dare", "hawk", "lamb", "junk", "lucy", "hans", "poet", "epic", "sake", "sans", "lean", "dude", "luis", "alto", "gore", "cult", "dash", "cage", "divx", "hugh", "jake", "eval", "ping", "flux", "muze", "oman", "rage", "adsl", "prix", "avon", "rays", "walt", "acne", "libs", "undo", "dana", "halo", "gays", "exec", "maui", "vids", "yale", "doom", "owen", "bite", "issn", "myth", "weed", "oecd", "dice", "quad", "dock", "mods", "hint", "msie", "buys", "pork", "barn", "fare", "asus", "bald", "fuji", "leon", "mold", "dame", "herb", "alot", "idle", "cove", "casa", "eden", "incl", "reid", "flex", "rosa", "hash", "lazy", "carb", "pens", "worm", "deaf", "mats", "blah", "mime", "feof", "usda", "keen", "peas", "urls", "owns", "zinc", "guru", "levy", "grad", "bras", "kyle", "pale", "gaps", "tear", "nest", "nato", "gale", "stan", "idol", "moss", "cork", "mali", "dome", "heel", "yang", "dumb", "feat", "ntsc", "usps", "conf", "glow", "oaks", "erik", "paso", "norm", "ware", "jade", "foul", "keno", "seas", "pose", "mrna", "goat", "sail", "sega", "cdna", "bolt", "gage", "urge", "smtp", "kurt", "neon", "ours", "lone", "cope", "lime", "kirk", "bool", "spas", "jets", "intl", "yarn", "knit", "pike", "hugo", "gzip", "ctrl", "bent", "laos"};
+        return new ArrayList<String>(Arrays.asList(dummy));
     }
-    public ArrayList<String> scanFile(String file, String word1, String word2) {
-        ArrayList<String> temp = readFile();
-        Toast.makeText(getApplicationContext(),String.valueOf(temp.size()),Toast.LENGTH_SHORT).show();
 
-        if (word1.length() != word2.length()) {
-            return null;
-        }
-        return temp;
-    }
     public ArrayList<String> search_for_match(ArrayList<String> list, String word1, String word2, int x) {
         ArrayList<String> result;
         if (word1.length() != word2.length()) {
@@ -238,9 +207,18 @@ public class ConfigurationScreen extends AppCompatActivity {
         }
         ArrayList<String> output_of = new ArrayList<String>();
         output_of.add(word1);
-        result = find_matches(list, word1, word2, output_of, 0, word1.length());
+        result = find_matches(list, word1, word2, output_of, 0, 16);
         return result;
     }
+
+    public int hamming(String w1, String w2) {
+        int correct = 0;
+        for (int i = 0; i < w1.length(); i++) {
+            correct += (w1.charAt(i) == w2.charAt(i)) ? 1 : 0;
+        }
+        return correct;
+    }
+
 
     public ArrayList<String> find_matches(ArrayList<String> list, String curr, String dest, ArrayList<String> output_list, int try_num, int try_max) {
         if (try_num == try_max) {
@@ -248,19 +226,18 @@ public class ConfigurationScreen extends AppCompatActivity {
         }
         Log.d("ConfigurationScreen", curr);
         if (curr.equals(dest)) {
-            Log.d("ConfigurationScreen",output_list.toString());
             return output_list;
         }
+        ArrayList<String> matches = new ArrayList<String>();
         for (String entry : list) {
             if (entry.length() != 0) {
-                int correct = 0;
-                for (int i = 0; i < entry.length(); i++) {
-                    correct += (entry.charAt(i) == curr.charAt(i)) ? 1 : 0;
-                }
-                Log.d("ConfigurationScreen",entry + " + " + curr + ": " + String.valueOf(correct));
+                int correct = hamming(entry,curr);
                 if (correct == entry.length() - 1) {
+                    Log.d("ConfigurationScreen",entry + " + " + curr + ": " + correct);
                     output_list.add(entry);
-                    return find_matches(list, entry, dest, output_list, try_num+1, entry.length());
+                    ArrayList<String> temp = (ArrayList<String>) list.clone();
+                    temp.remove(entry);
+                    return find_matches(temp, entry, dest, output_list, try_num+1, entry.length());
                 }
             }
         }
@@ -319,12 +296,41 @@ public class ConfigurationScreen extends AppCompatActivity {
                     //ArrayList<String> word_list = scanFile(fileName, from, to);
                     ArrayList<String> matches = search_for_match(word_list, from, to, from.length());
                     if (matches != null) {
-                        Toast.makeText(getApplicationContext(), matches.toString(), Toast.LENGTH_SHORT).show();
+                        // matches is the final list!
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Could not find matches!", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
+        });
+
+        random_puzzle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<String[]> outcomes = new ArrayList<String[]>();
+                outcomes.add(new String[]{"live", "line"});
+                outcomes.add(new String[]{"bear", "hear"});
+                outcomes.add(new String[]{"char", "what"});
+                outcomes.add(new String[]{"beer", "then"});
+                outcomes.add(new String[]{"prod", "prot"});
+                outcomes.add(new String[]{"rage", "face"});
+                outcomes.add(new String[]{"cage", "face"});
+                outcomes.add(new String[]{"aims", "bids"});
+                outcomes.add(new String[]{"bids", "aids"});
+                outcomes.add(new String[]{"wine", "life"});
+                outcomes.add(new String[]{"noon", "mood"});
+                outcomes.add(new String[]{"mood", "wood"});
+                outcomes.add(new String[]{"moon", "soon"});
+                outcomes.add(new String[]{"tent", "nest"});
+                outcomes.add(new String[]{"read", "road"});
+                outcomes.add(new String[]{"rain", "fail"});
+                Random random = new Random();
+                int r_idx = random.nextInt(outcomes.size());
+                start_word.setText(outcomes.get(r_idx)[0]);
+                end_word.setText(outcomes.get(r_idx)[1]);
+                // I put the words here for the sake of clarity,
+                // but the player wouldn't see these
             }
         });
 
