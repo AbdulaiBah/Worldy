@@ -90,7 +90,7 @@ public class Graph {
             return null;
         }
         if (start.equals(end)) {
-            return new ArrayList<>(Collections.singletonList(start));
+            return null;
         }
         Queue<String> queue = new ArrayDeque<>();
         Map<String, String> prev = new HashMap<>();

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -53,6 +54,8 @@ public class ConfigurationScreen extends AppCompatActivity {
     int difficulty = 0;
     Graph graph = new Graph();
 
+    public List<String> finalPath;
+
     List<List<String>> easyPaths = new ArrayList<List<String>>();
     List<List<String>> mediumPaths = new ArrayList<List<String>>();
     List<List<String>> hardPaths = new ArrayList<List<String>>();
@@ -97,7 +100,22 @@ public class ConfigurationScreen extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-
+                if (start_word.getText().toString().equals("") || end_word.getText().toString().equals("")){
+                    Toast.makeText(ConfigurationScreen.this, "Please enter a start and end word", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    String start = start_word.getText().toString();
+                    String end = end_word.getText().toString();
+                    List<String> path = graph.getPath(start, end);
+                    if (path == null){
+                        Toast.makeText(ConfigurationScreen.this, "No path found", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        finalPath = path;
+                        Intent intent = new Intent(ConfigurationScreen.this, GameScreen.class);
+                        startActivity(intent);
+                    }
+                }
             }
         });
 
@@ -180,8 +198,6 @@ public class ConfigurationScreen extends AppCompatActivity {
         }
     }
 
-    //this function needs to be done on a seperate thread so as to ensure the app does not freeze
-    //should also add a thinking animation to this screen
     private void differentPaths(){
         Map<Integer, String> wordMap = graph.getWordDict();
         for (int i = 0; i < wordMap.size()/10; i++){
