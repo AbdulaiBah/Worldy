@@ -40,6 +40,7 @@ public class GameScreen extends AppCompatActivity {
         return i == path.indexOf(word);
     }
 
+    //Check that the word is a valid path in the graph
 
     public void getImage() {
         for (int i = 0; i < path.size(); i++) {
