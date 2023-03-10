@@ -2,12 +2,17 @@ package edu.fandm.mobapp.worldy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -24,6 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -67,8 +73,8 @@ public class GameScreen extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (output != null) {
-                        //ImageView iv = findViewById(R.id.test_image);
-                        //iv.setImageBitmap(output);
+                        ImageView iv = findViewById(R.id.puzzleImage);
+                        iv.setImageBitmap(output);
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Could not get JSON file!", Toast.LENGTH_SHORT).show();
@@ -209,11 +215,27 @@ public class GameScreen extends AppCompatActivity {
 
     //Check that the word is a valid path in the graph
 
-    public void getImage() {
-        for (int i = 0; i < path.size(); i++) {
-            String word = path.get(i);
-
+    public void updateImage(String pathitem) {
+        word_source = pathitem;
+        GameScreen.GetJSONExecutor gjse = new GameScreen.GetJSONExecutor();
+        gjse.fetch(gjsonc);
     }
 
+    private void rotateAnimation(View v){
+        Animation rotate = AnimationUtils.loadAnimation(this, R.anim.rotate_animation);
+        rotate.setDuration(1000);
+        rotate.setRepeatCount(Animation.INFINITE);
+        v.startAnimation(rotate);
+    }
 
-}}
+    public void finishGame() {
+        ImageView iv = findViewById(R.id.star);
+        iv.setVisibility(View.VISIBLE);
+        rotateAnimation(iv);
+        Toast.makeText(getApplicationContext(), "You win!", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(this, ConfigurationScreen.class);
+        startActivity(intent);
+    }
+
+}
