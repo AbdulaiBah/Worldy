@@ -4,17 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_isabelline"
+    android:background="@color/black_raisin"
     tools:context=".ReadMe">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to Wordly! To play the game change one letter at a time to get from a starting word to an ending word. Select the difficulty with the slider as shown below, and press the hint button to get a hint. Good luck!"
+        android:textAlignment="center"
+        android:textColor="@color/white_isabelline"
+        android:textSize="20dp"
+        android:fontFamily="sans-serif-black"
+        android:background="@color/black_raisin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="761dp"
-        android:layout_height="512dp"
+        android:layout_width="780dp"
+        android:layout_height="500dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.775"
+        app:layout_constraintVertical_bias="0.982"
         app:srcCompat="@mipmap/selectionbar_foreground" />
 </androidx.constraintlayout.widget.ConstraintLayout>
