@@ -54,7 +54,7 @@ public class ConfigurationScreen extends AppCompatActivity {
     int difficulty = 0;
     Graph graph = new Graph();
 
-    public List<String> finalPath;
+    public static List<String> finalPath;
 
     List<List<String>> easyPaths = new ArrayList<List<String>>();
     List<List<String>> mediumPaths = new ArrayList<List<String>>();
@@ -205,7 +205,6 @@ public class ConfigurationScreen extends AppCompatActivity {
                 if (i != j) {
                     List<String> path = graph.getPath(wordMap.get(i), wordMap.get(j));
                     if (path != null && path.size() > 2 && path.size() < 6) {
-                        System.out.println(path);
                         switch (path.size()) {
                             case 3:
                                 easyPaths.add(path);

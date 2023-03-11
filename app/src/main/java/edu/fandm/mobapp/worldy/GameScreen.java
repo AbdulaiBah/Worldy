@@ -6,14 +6,24 @@ import androidx.core.app.ActivityCompat;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
+import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -30,12 +40,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import kotlin.io.LineReader;
 
 public class GameScreen extends AppCompatActivity {
 
@@ -184,8 +197,10 @@ public class GameScreen extends AppCompatActivity {
             });
         }
     }
-    ArrayList<String> path;
-    String[] currentGuess;
+    List<String> path = ConfigurationScreen.finalPath;
+    LinearLayout ll;
+
+    int CorrectGuesses = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,32 +208,90 @@ public class GameScreen extends AppCompatActivity {
         setContentView(R.layout.activity_game_screen);
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.INTERNET},0);
 
+        ll = findViewById(R.id.guesses);
 
-        currentGuess = new String[path.size()];
-        String startWord = path.get(0);
-        String endWord = path.get(path.size() - 1);
-        currentGuess[0] = startWord;
-        currentGuess[path.size() - 1] = endWord;
-
-
+        initDisplay();
 
     }
 
-    public void hintButton(View view) {
+    private void initDisplay() {
+        TextView startView = findViewById(R.id.startText);
+        startView.setText(path.get(0));
+        TextView endView = findViewById(R.id.endText);
+        endView.setText(path.get(path.size()-1));
 
+        for (int i = 0; i < path.size()-2; i++) {
+            EditText et = new EditText(this);
+            LinearLayout.LayoutParams params;
+            et.setLayoutParams(params = new LinearLayout.LayoutParams(
+                    100,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+            params.rightMargin = (int) (1 * getResources().getDisplayMetrics().density + 0.5f);
+            params.gravity = Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL;
+            params.width = 100;
+            params.weight = 1;
+            et.setWidth(100);
+            et.setId(i);
+            et.setFontFeatureSettings("sans-serif-black");
+            et.setTextSize(12);
+            et.setTextColor(Color.parseColor("#F5F1ED"));
+            et.setBackgroundColor(Color.parseColor("#2C2C2C"));
+            et.setPadding(10,10,10,10);
+            et.setGravity(Gravity.CENTER_HORIZONTAL| Gravity.CENTER_VERTICAL);
+            et.setAllCaps(true);
+            et.setLayoutParams(params);
+
+            et.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                    int index = ll.indexOfChild(et);
+//                    word_source = path.get(index);
+//                    updateImage();
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (checkWord(et,s.toString())) {
+                        et.setEnabled(false);
+                        et.setBackgroundColor(Color.parseColor("#20BA79"));
+                        CorrectGuesses++;
+                        if (CorrectGuesses == path.size()-2) {
+                            finishGame();
+                        }
+                    }
+                    else {
+                        et.setBackgroundColor(Color.parseColor("#A91B0D"));
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    // Do nothing
+                }
+            });
+
+            int index = ll.indexOfChild(endView);
+            ll.addView(et, index);
+        }
     }
 
-
-
-    public boolean checkWord(String word) {
-        int i = Arrays.asList(currentGuess).indexOf(word);
-        return i == path.indexOf(word);
+    public boolean checkWord(EditText editText, String guess) {
+        int index = ll.indexOfChild(editText);
+        System.out.println(index);
+        String userguess = guess.toLowerCase();
+        System.out.println("ans " + path.get(index));
+        if (!userguess.isEmpty() && userguess.equals(path.get(index))) {
+            Toast.makeText(getApplicationContext(), "Correct guess!", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else if (!userguess.isEmpty() && !userguess.equals(path.get(index))){
+            // Don't show error message when the user hasn't entered anything yet
+            return false;
+        }
+        return false;
     }
 
-    //Check that the word is a valid path in the graph
-
-    public void updateImage(String pathitem) {
-        word_source = pathitem;
+    public void updateImage() {
         GameScreen.GetJSONExecutor gjse = new GameScreen.GetJSONExecutor();
         gjse.fetch(gjsonc);
     }
@@ -236,8 +309,15 @@ public class GameScreen extends AppCompatActivity {
         rotateAnimation(iv);
         Toast.makeText(getApplicationContext(), "You win!", Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(this, ConfigurationScreen.class);
-        startActivity(intent);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(getApplicationContext(), ConfigurationScreen.class);
+                startActivity(intent);
+            }
+        }, 3000); // 3000 milliseconds = 3 seconds
     }
+
 
 }
