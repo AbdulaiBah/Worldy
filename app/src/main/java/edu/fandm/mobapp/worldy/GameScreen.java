@@ -54,6 +54,18 @@ public class GameScreen extends AppCompatActivity {
 
     public String word_source; // assign this to whatever you need to get
     public String TAG = "GameScreen";
+
+    public void hintButton(View view) {
+        Random rand = new Random();
+        int rand_int = rand.nextInt(path.size());
+        String hint = path.get(rand_int);
+        while (hint.equals(path.get(0)) || hint.equals(path.get(path.size() - 1))){
+            rand_int = rand.nextInt(path.size());
+            hint = path.get(rand_int);
+        }
+        Toast.makeText(getApplicationContext(), "Hint: " + hint, Toast.LENGTH_SHORT).show();
+    }
+
     public interface GetJSONCallback {
         void onComplete(String json);
     }
@@ -117,7 +129,7 @@ public class GameScreen extends AppCompatActivity {
             Random r_idx = new Random();
             JSONObject jsonCatFact = new JSONObject(data.toString());
             JSONArray jsonArray = jsonCatFact.getJSONArray("hits");
-            JSONObject help = (JSONObject)jsonArray.get(r_idx.nextInt(4));
+            JSONObject help = (JSONObject)jsonArray.get(r_idx.nextInt(10));
             ret_url = (String)help.get("userImageURL");
 
         }
@@ -199,6 +211,11 @@ public class GameScreen extends AppCompatActivity {
             });
         }
     }
+
+    public void updateImage() {
+        GameScreen.GetJSONExecutor gjse = new GameScreen.GetJSONExecutor();
+        gjse.fetch(gjsonc);
+    }
     List<String> path = ConfigurationScreen.finalPath;
     LinearLayout ll;
 
@@ -228,7 +245,7 @@ public class GameScreen extends AppCompatActivity {
             et.setLayoutParams(params = new LinearLayout.LayoutParams(
                     100,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-            params.rightMargin = (int) (1 * getResources().getDisplayMetrics().density + 0.5f);
+            params.rightMargin = (int) (2 * getResources().getDisplayMetrics().density + 0.5f);
             params.gravity = Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL;
             params.width = 100;
             params.weight = 1;
@@ -293,11 +310,6 @@ public class GameScreen extends AppCompatActivity {
         return false;
     }
 
-    public void updateImage() {
-        GetJSONExecutor jse = new GetJSONExecutor();
-        jse.fetch(gjsonc);
-    }
-
     private void rotateAnimation(View v){
         Animation rotate = AnimationUtils.loadAnimation(this, R.anim.rotate_animation);
         rotate.setDuration(1000);
@@ -320,6 +332,7 @@ public class GameScreen extends AppCompatActivity {
             }
         }, 3000); // 3000 milliseconds = 3 seconds
     }
+
 
 
 }
