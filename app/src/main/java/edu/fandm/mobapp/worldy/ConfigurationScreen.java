@@ -11,6 +11,9 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -49,24 +52,39 @@ import java.util.concurrent.Executors;
 import javax.net.ssl.HttpsURLConnection;
 
 public class ConfigurationScreen extends AppCompatActivity {
-
     private final static String TAG = ConfigurationScreen.class.getName();
-    int difficulty = 0;
     Graph graph = new Graph();
-
     public static List<String> finalPath;
-
-    List<List<String>> easyPaths = new ArrayList<List<String>>();
-    List<List<String>> mediumPaths = new ArrayList<List<String>>();
-    List<List<String>> hardPaths = new ArrayList<List<String>>();
-
+    int difficulty = 0;
     EditText start_word;
     EditText end_word;
     SeekBar diff_slider;
     Button random_puzzle;
     Button play_button;
+    List<List<String>> easyPaths = new ArrayList<List<String>>();
+    List<List<String>> mediumPaths = new ArrayList<List<String>>();
+    List<List<String>> hardPaths = new ArrayList<List<String>>();
 
+    /**
+     * This is the Menu implementation
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu m) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, m);
+        return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.ReadME) {
+            Intent intent = new Intent(this, ReadMe.class);
+            startActivity(intent);
+        }
+        return true;
+    }
 
+    /**
+     * This is the onCreate implementation, this handles the creation of the activity and allows for the setting of the puzzle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,14 +106,15 @@ public class ConfigurationScreen extends AppCompatActivity {
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                //do nothing
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                //do nothing
             }
         });
 
+        //This is the play button, it checks if the start and end words are valid and then starts the game
         play_button.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -119,6 +138,7 @@ public class ConfigurationScreen extends AppCompatActivity {
             }
         });
 
+        //This is the random puzzle button, it sets the start and end words to a random path based on the difficulty from the slider
         random_puzzle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,6 +171,9 @@ public class ConfigurationScreen extends AppCompatActivity {
 
     }
 
+    /**
+     * This is the differentPaths function, it finds all the paths of different difficulties and stores them in the corresponding lists, this is done in a seperate thread
+     */
     interface differentPathsCallback{
         void onPathsFound(List<List<String>> easyPaths, List<List<String>> mediumPaths, List<List<String>> hardPaths);
     }

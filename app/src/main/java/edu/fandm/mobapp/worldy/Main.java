@@ -32,6 +32,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Main extends AppCompatActivity {
 
+    //Throw away code
     public String TAG = "Main";
     public String word_source = "bear";
     public ArrayList<String> word_dict;

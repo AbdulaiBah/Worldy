@@ -114,7 +114,7 @@ public class GameScreen extends AppCompatActivity {
         String ret_url = null;
         try {
             // Example URL: https://pixabay.com/api/?key=34155944-44bc9eeb96f0cc3d13b404eaa&q=yellow+flowers&image_type=photo
-            URL url = new URL("https://pixabay.com/api/?key=34155944-44bc9eeb96f0cc3d13b404eaa&q=" + word_source + "&image_type=photo&editors_choice=true");
+            URL url = new URL("https://pixabay.com/api/?key=34155944-44bc9eeb96f0cc3d13b404eaa&q=" + word_source + "&image_type=photo");
 
             HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
             con.setRequestMethod("GET");
@@ -135,16 +135,16 @@ public class GameScreen extends AppCompatActivity {
         }
         catch (MalformedURLException mue) {
             Looper.prepare();
-            Toast.makeText(getApplicationContext(), "Invalid URL!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Invalid URL!", Toast.LENGTH_SHORT).show();
         }
         catch (JSONException jsone) {
             Looper.prepare();
-            Toast.makeText(getApplicationContext(), "JSON file formatted improperly!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "JSON file formatted improperly!", Toast.LENGTH_SHORT).show();
             jsone.printStackTrace();
         }
         catch (IOException ioe) {
             Looper.prepare();
-            Toast.makeText(getApplicationContext(), "URL cannot be connected!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "URL cannot be connected!", Toast.LENGTH_SHORT).show();
         }
         return ret_url;
     }

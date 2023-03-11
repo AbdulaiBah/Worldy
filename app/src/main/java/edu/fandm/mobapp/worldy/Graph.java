@@ -21,15 +21,7 @@ public class Graph {
     private Map<String, Set<String>> adjacencyMap;
     private Map<Integer,String> wordDict = new HashMap<>();
 
-    public Graph() {
-        adjacencyMap = new HashMap<>();
-        populateWords();
-        for (String word : wordDict.values()) {
-            adjacencyMap.put(word, new HashSet<>());
-        }
-        buildGraph();
-    }
-
+    //Reads the words from the text file
     private void populateWords(){
         try {
             InputStream is = Objects.requireNonNull(getClass().getClassLoader()).getResourceAsStream("assets/words_simple.txt");
@@ -50,6 +42,17 @@ public class Graph {
         }
     }
 
+    //Graph constructor
+    public Graph() {
+        adjacencyMap = new HashMap<>();
+        populateWords();
+        for (String word : wordDict.values()) {
+            adjacencyMap.put(word, new HashSet<>());
+        }
+        buildGraph();
+    }
+
+    //Creates the graph by creating the paths between the words
     private void buildGraph() {
         for (String word1 : wordDict.values()) {
             for (String word2 : wordDict.values()) {
@@ -61,6 +64,12 @@ public class Graph {
         }
     }
 
+    //Returns the adjacent words
+    private Set<String> getAdjacentWords(String word) {
+        return adjacencyMap.get(word);
+    }
+
+    //Checks if the words differ by one letter
     private boolean differByOneLetter(String word1, String word2) {
         if (word1.length() != word2.length()) {
             return false;
@@ -77,14 +86,14 @@ public class Graph {
         return diffCount == 1;
     }
 
-    private Set<String> getAdjacentWords(String word) {
-        return adjacencyMap.get(word);
-    }
+    //Public Methods to be accessed by other classes
 
+    //Returns the word dictionary
     public Map<Integer,String> getWordDict(){
         return wordDict;
     }
 
+    //Returns the path between two words
     public List<String> getPath(String start, String end){
         if (!wordDict.containsValue(start) || !wordDict.containsValue(end)) {
             return null;

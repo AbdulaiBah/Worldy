@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to Wordly! To play the game change one letter at a time to get from a starting word to an ending word. Select the difficulty with the slider as shown below, and press the hint button to get a hint. Good luck!"
+        android:text="Welcome to Wordly (misspelt worldy)! To play the game change one letter at a time to get from a starting word to an ending word. Select the difficulty with the slider as shown below, and press the hint button to get given one of the words. Good luck!"
         android:textAlignment="center"
         android:textColor="@color/white_isabelline"
         android:textSize="20dp"
