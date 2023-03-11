@@ -164,9 +164,11 @@ public class GameScreen extends AppCompatActivity {
 
         }
         catch (MalformedURLException mue) {
+            Looper.prepare();
             Toast.makeText(getApplicationContext(), "Invalid URL!", Toast.LENGTH_SHORT).show();
         }
         catch (IOException ioe) {
+            Looper.prepare();
             Toast.makeText(getApplicationContext(), "URL cannot be connected.", Toast.LENGTH_SHORT).show();
         }
         return bp;
@@ -244,9 +246,9 @@ public class GameScreen extends AppCompatActivity {
             et.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                    int index = ll.indexOfChild(et);
-//                    word_source = path.get(index);
-//                    updateImage();
+                    int index = ll.indexOfChild(et);
+                    word_source = path.get(index);
+                    updateImage();
                 }
 
                 @Override
@@ -292,8 +294,8 @@ public class GameScreen extends AppCompatActivity {
     }
 
     public void updateImage() {
-        GameScreen.GetJSONExecutor gjse = new GameScreen.GetJSONExecutor();
-        gjse.fetch(gjsonc);
+        GetJSONExecutor jse = new GetJSONExecutor();
+        jse.fetch(gjsonc);
     }
 
     private void rotateAnimation(View v){
